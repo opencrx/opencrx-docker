@@ -41,7 +41,7 @@ RUN echo "<IfModule jk_module>" > /etc/apache2/sites-available/000-default.conf 
   && apache2ctl restart
 
 # Prepare entrypoint
-ADD https://raw.githubusercontent.com/opencrx/opencrx/master/installer/src/docker/opencrx/docker-entrypoint.sh /
+ADD https://raw.githubusercontent.com/opencrx/opencrx-docker/master/src/main/docker/opencrx/docker-entrypoint.sh /
 RUN chmod a+x /docker-entrypoint.sh
 
 # Create and set user opencrx
