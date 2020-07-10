@@ -1,6 +1,6 @@
 FROM ubuntu
 MAINTAINER docker@opencrx.org
-ENV VERSION 4.3.0-rc.1
+ENV VERSION 4.3.0
 ENV PLATFORM jre-1.8
 ENV HOME /root
 ENV TOMEE_BASEDIR apache-tomee-plus-7.0.5
