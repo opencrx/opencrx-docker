@@ -1,9 +1,9 @@
 FROM ubuntu
 MAINTAINER docker@opencrx.org
-ENV VERSION 4.3.0
-ENV PLATFORM jre-1.8
+ENV VERSION 5.0-20200715
+ENV PLATFORM jre-11
 ENV HOME /root
-ENV TOMEE_BASEDIR apache-tomee-plus-7.0.5
+ENV TOMEE_BASEDIR apache-tomee-plus-8.0.3
 
 # Install ant, jdk, apache2
 RUN apt-get update
@@ -12,7 +12,7 @@ RUN apt-get -y install \
 
 RUN add-apt-repository ppa:openjdk-r/ppa && apt-get update && apt-get -y install \
   net-tools \
-  openjdk-8-jdk \
+  openjdk-11-jdk \
   wget \
   unzip \
   ant \
@@ -54,7 +54,7 @@ RUN mkdir $HOME/opt \
   && mkdir $HOME/temp \
   && wget -O $HOME/temp/opencrxServer-$VERSION-installer.$PLATFORM.jar https://github.com/opencrx/opencrx/releases/download/opencrx-v$VERSION/opencrxServer-$VERSION-installer.$PLATFORM.jar \
   && echo "INSTALL_PATH=$HOME/opt/opencrx" > $HOME/temp/opencrx-install.properties \
-  && echo "JDKPath=/usr/lib/jvm/java-8-openjdk-amd64" >> $HOME/temp/opencrx-install.properties \
+  && echo "JDKPath=/usr/lib/jvm/java-11-openjdk-amd64" >> $HOME/temp/opencrx-install.properties \
   && echo "ANTPath=/usr/bin/ant" >> $HOME/temp/opencrx-install.properties \
   && cat $HOME/temp/opencrx-install.properties \
   && java -jar $HOME/temp/opencrxServer-$VERSION-installer.$PLATFORM.jar -options $HOME/temp/opencrx-install.properties \
@@ -65,4 +65,4 @@ RUN mkdir $HOME/opt \
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 EXPOSE 80 8001 8009
-CMD cd /home/opencrx/opt/opencrx/$TOMEE_BASEDIR/bin;export JDKPath=/usr/lib/jvm/java-8-openjdk-amd64;./opencrx.sh run
+CMD cd /home/opencrx/opt/opencrx/$TOMEE_BASEDIR/bin;export JDKPath=/usr/lib/jvm/java-11-openjdk-amd64;./opencrx.sh run
