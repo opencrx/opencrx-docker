@@ -26,8 +26,8 @@ suppliers or intermediaries.
 
     docker logs -f opencrx
     docker exec -t -i opencrx /bin/bash
-    docker exec -i opencrx cat /root/opt/opencrx/apache-tomee-plus-8.0.5/logs/catalina.yyyy-mm-dd.log
-    docker cp opencrx:/root/opt/opencrx/apache-tomee-plus-8.0.5/logs/catalina.yyyy-mm-dd.log .
+    docker exec -i opencrx cat /home/opencrx/opt/opencrx/apache-tomee-plus-8.0.6/logs/catalina.yyyy-mm-dd.log
+    docker cp opencrx:/home/opencrx/opt/opencrx/apache-tomee-plus-8.0.6/logs/catalina.yyyy-mm-dd.log .
 
 # How to extend this image
 
@@ -35,4 +35,4 @@ Here is an example of a custom Dockerfile which replaces the default tomee.xml b
 
     FROM opencrx:latest
     MAINTAINER demo@opencrx.org
-    COPY ./tomee.xml $HOME/opt/opencrx/apache-tomee-plus-8.0.5/conf/
+    COPY ./tomee.xml /home/opencrx/opt/opencrx/apache-tomee-plus-8.0.6/conf/
