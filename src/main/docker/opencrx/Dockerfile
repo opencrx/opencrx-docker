@@ -1,6 +1,6 @@
-FROM ubuntu
+FROM ubuntu:latest
 MAINTAINER docker@opencrx.org
-ENV VERSION 5.2.1
+ENV VERSION 5.2.2
 ENV PLATFORM jre-11
 ENV HOME /root
 ENV TOMEE_BASEDIR apache-tomee-plus-8.0.6
@@ -20,23 +20,13 @@ RUN add-apt-repository ppa:openjdk-r/ppa && apt-get update && apt-get -y install
   libapache2-mod-jk
 
 # Do not expose port 8080 of Tomcat --> front Tomcat with Apache using AJP
-RUN mkdir -p /etc/apache2/conf
-RUN echo "worker.list=ajp13_opencrx" > /etc/apache2/conf/workers.properties \
-  && echo "# ajp-opencrx" >> /etc/apache2/conf/workers.properties \
-  && echo "worker.ajp13_opencrx.type=ajp13" >> /etc/apache2/conf/workers.properties \
-  && echo "worker.ajp13_opencrx.host=localhost" >> /etc/apache2/conf/workers.properties \
-  && echo "worker.ajp13_opencrx.port=8009" >> /etc/apache2/conf/workers.properties
-
-RUN echo "<IfModule jk_module>" > /etc/apache2/sites-available/000-default.conf \
-  && echo "  JkWorkersFile conf/workers.properties" >> /etc/apache2/sites-available/000-default.conf \
-  && echo "</IfModule>" >> /etc/apache2/sites-available/000-default.conf \
-  && echo "<VirtualHost *:80>" >> /etc/apache2/sites-available/000-default.conf \
+RUN echo "<VirtualHost *:80>" > /etc/apache2/sites-available/000-default.conf \
   && echo "  ServerAdmin webmaster@localhost" >> /etc/apache2/sites-available/000-default.conf \
   && echo "  DocumentRoot /var/www/html" >> /etc/apache2/sites-available/000-default.conf \
   && echo "  LogLevel info" >> /etc/apache2/sites-available/000-default.conf \
   && echo "  ErrorLog \${APACHE_LOG_DIR}/error.log" >> /etc/apache2/sites-available/000-default.conf \
   && echo "  CustomLog \${APACHE_LOG_DIR}/access.log combined" >> /etc/apache2/sites-available/000-default.conf \
-  && echo "  JkMount /* ajp13_opencrx" >> /etc/apache2/sites-available/000-default.conf \
+  && echo "  JkMount /* ajp13_worker" >> /etc/apache2/sites-available/000-default.conf \
   && echo "</VirtualHost>" >> /etc/apache2/sites-available/000-default.conf \
   && apache2ctl restart
 
