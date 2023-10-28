@@ -8,11 +8,11 @@ suppliers or intermediaries.
 
 ## Build this image
 
-    docker build -t opencrx:v5.2.2 .
+    docker build -t opencrx:v5.3.0 .
     
 ## Run this image
 
-    docker run -d -p 8080:80 -p 8009:8009 -p 8001:8001 --name opencrx opencrx:v5.2.2
+    docker run -d -p 8080:80 -p 8009:8009 -p 8001:8001 --name opencrx opencrx:v5.3.0
     
 ## Stop container
 
@@ -26,13 +26,13 @@ suppliers or intermediaries.
 
     docker logs -f opencrx
     docker exec -t -i opencrx /bin/bash
-    docker exec -i opencrx cat /home/opencrx/opt/opencrx/apache-tomee-plus-8.0.6/logs/catalina.yyyy-mm-dd.log
-    docker cp opencrx:/home/opencrx/opt/opencrx/apache-tomee-plus-8.0.6/logs/catalina.yyyy-mm-dd.log .
+    docker exec -i opencrx cat /home/opencrx/opt/opencrx/apache-tomee-plus-8.0.15/logs/catalina.yyyy-mm-dd.log
+    docker cp opencrx:/home/opencrx/opt/opencrx/apache-tomee-plus-8.0.15/logs/catalina.yyyy-mm-dd.log .
 
 # How to extend this image
 
 Here is an example of a custom Dockerfile which replaces the default tomee.xml by a custom configuration:
 
-    FROM opencrx:v5.2.2
+    FROM opencrx:v5.3.0
     MAINTAINER demo@opencrx.org
-    COPY ./tomee.xml /home/opencrx/opt/opencrx/apache-tomee-plus-8.0.6/conf/
+    COPY ./tomee.xml /home/opencrx/opt/opencrx/apache-tomee-plus-8.0.15/conf/
