@@ -8,11 +8,11 @@ suppliers or intermediaries.
 
 ## Build this image
 
-    docker build -t opencrx:v5.3.2 .
+    docker build -t opencrx:v6.0.0 .
     
 ## Run this image
 
-    docker run -d -p 8080:80 -p 8009:8009 -p 8001:8001 --name opencrx opencrx:v5.3.2
+    docker run -d -p 8080:80 -p 8009:8009 -p 8001:8001 --name opencrx opencrx:v6.0.0
     
 ## Stop container
 
@@ -33,6 +33,6 @@ suppliers or intermediaries.
 
 Here is an example of a custom Dockerfile which replaces the default tomee.xml by a custom configuration:
 
-    FROM opencrx:v5.3.2
+    FROM opencrx:v6.0.0
     MAINTAINER demo@opencrx.org
-    COPY ./tomee.xml /home/opencrx/opt/opencrx/apache-tomee-plus-8.0.15/conf/
+    COPY ./tomee.xml /home/opencrx/opt/opencrx/apache-tomee-plus-10.0.0/conf/
