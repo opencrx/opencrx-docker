@@ -1,9 +1,9 @@
 FROM ubuntu:latest
 MAINTAINER docker@opencrx.org
-ENV VERSION 5.3.2
-ENV PLATFORM jre-11
+ENV VERSION 6.0.0
+ENV PLATFORM jre-21
 ENV HOME /root
-ENV TOMEE_BASEDIR apache-tomee-plus-8.0.15
+ENV TOMEE_BASEDIR apache-tomee-plus-10.0.0
 
 # Install ant, jdk, apache2
 RUN apt-get update
@@ -12,7 +12,8 @@ RUN apt-get -y install \
 
 RUN add-apt-repository ppa:openjdk-r/ppa && apt-get update && apt-get -y install \
   net-tools \
-  openjdk-11-jdk \
+  openjdk-17-jdk \
+  openjdk-21-jdk \
   wget \
   unzip \
   ant \
@@ -31,7 +32,7 @@ RUN echo "<VirtualHost *:80>" > /etc/apache2/sites-available/000-default.conf \
   && apache2ctl restart
 
 # Prepare entrypoint
-ADD https://raw.githubusercontent.com/opencrx/opencrx-docker/master/src/main/docker/opencrx/docker-entrypoint.sh /
+COPY ./docker-entrypoint.sh /
 RUN chmod a+x /docker-entrypoint.sh
 
 # Create and set user opencrx
@@ -39,15 +40,16 @@ RUN useradd -m opencrx
 ENV HOME /home/opencrx
 RUN ls -al $HOME
 
-# Get and install openCRX
+# Get openCRX from build
+RUN mkdir $HOME/temp
+COPY files/opencrxServer-$VERSION-installer.$PLATFORM.jar $HOME/temp/opencrxServer-$VERSION-installer.$PLATFORM.jar
+
 RUN mkdir $HOME/opt \
-  && mkdir $HOME/temp \
-  && wget -O $HOME/temp/opencrxServer-$VERSION-installer.$PLATFORM.jar https://github.com/opencrx/opencrx/releases/download/opencrx-v$VERSION/opencrxServer-$VERSION-installer.$PLATFORM.jar \
   && echo "INSTALL_PATH=$HOME/opt/opencrx" > $HOME/temp/opencrx-install.properties \
-  && echo "JDKPath=/usr/lib/jvm/java-11-openjdk-amd64" >> $HOME/temp/opencrx-install.properties \
+  && echo "JDKPath=/usr/lib/jvm/java-21-openjdk-amd64" >> $HOME/temp/opencrx-install.properties \
   && echo "ANTPath=/usr/bin/ant" >> $HOME/temp/opencrx-install.properties \
   && cat $HOME/temp/opencrx-install.properties \
-  && java -jar $HOME/temp/opencrxServer-$VERSION-installer.$PLATFORM.jar -options $HOME/temp/opencrx-install.properties \
+  && /usr/lib/jvm/java-17-openjdk-amd64/bin/java -jar $HOME/temp/opencrxServer-$VERSION-installer.$PLATFORM.jar -options $HOME/temp/opencrx-install.properties \
   && ls -al $HOME/opt/opencrx \
   && rm -rf $HOME/temp \
   && chown -R opencrx $HOME/opt \
@@ -55,4 +57,4 @@ RUN mkdir $HOME/opt \
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 EXPOSE 80 8001 8009
-CMD cd /home/opencrx/opt/opencrx/$TOMEE_BASEDIR/bin;export JDKPath=/usr/lib/jvm/java-11-openjdk-amd64;./opencrx.sh run
+CMD cd /home/opencrx/opt/opencrx/$TOMEE_BASEDIR/bin;export JDKPath=/usr/lib/jvm/java-21-openjdk-amd64;./opencrx.sh run
