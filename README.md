@@ -26,8 +26,8 @@ suppliers or intermediaries.
 
     docker logs -f opencrx
     docker exec -t -i opencrx /bin/bash
-    docker exec -i opencrx cat /home/opencrx/opt/opencrx/apache-tomee-plus-8.0.15/logs/catalina.yyyy-mm-dd.log
-    docker cp opencrx:/home/opencrx/opt/opencrx/apache-tomee-plus-8.0.15/logs/catalina.yyyy-mm-dd.log .
+    docker exec -i opencrx cat /home/opencrx/opt/opencrx/apache-tomee-plus-10.0.0/logs/catalina.yyyy-mm-dd.log
+    docker cp opencrx:/home/opencrx/opt/opencrx/apache-tomee-plus-10.0.0/logs/catalina.yyyy-mm-dd.log .
 
 # How to extend this image
 
