@@ -1,9 +1,9 @@
 FROM ubuntu:latest
 MAINTAINER docker@opencrx.org
-ENV VERSION 6.0.0
+ENV VERSION 6.0.2
 ENV PLATFORM jre-21
 ENV HOME /root
-ENV TOMEE_BASEDIR apache-tomee-plus-10.0.0
+ENV TOMEE_BASEDIR apache-tomee-plus-10.1.0
 
 # Install ant, jdk, apache2
 RUN apt-get update
@@ -12,8 +12,10 @@ RUN apt-get -y install \
 
 RUN add-apt-repository ppa:openjdk-r/ppa && apt-get update && apt-get -y install \
   net-tools \
-  openjdk-17-jdk \
   openjdk-21-jdk \
+  cron \
+  logrotate \
+  inetutils-syslogd \  
   wget \
   unzip \
   ant \
@@ -49,7 +51,7 @@ RUN mkdir $HOME/opt \
   && echo "JDKPath=/usr/lib/jvm/java-21-openjdk-amd64" >> $HOME/temp/opencrx-install.properties \
   && echo "ANTPath=/usr/bin/ant" >> $HOME/temp/opencrx-install.properties \
   && cat $HOME/temp/opencrx-install.properties \
-  && /usr/lib/jvm/java-17-openjdk-amd64/bin/java -jar $HOME/temp/opencrxServer-$VERSION-installer.$PLATFORM.jar -options $HOME/temp/opencrx-install.properties \
+  && /usr/lib/jvm/java-21-openjdk-amd64/bin/java -jar $HOME/temp/opencrxServer-$VERSION-installer.$PLATFORM.jar -options $HOME/temp/opencrx-install.properties \
   && ls -al $HOME/opt/opencrx \
   && rm -rf $HOME/temp \
   && chown -R opencrx $HOME/opt \
