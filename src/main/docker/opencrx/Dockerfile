@@ -1,9 +1,9 @@
 FROM ubuntu:latest
 MAINTAINER docker@opencrx.org
-ENV VERSION 6.0.2
+ENV VERSION 6.0.3
 ENV PLATFORM jre-21
 ENV HOME /root
-ENV TOMEE_BASEDIR apache-tomee-plus-10.1.0
+ENV TOMEE_BASEDIR apache-tomee-plus-10.1.2
 
 # Install ant, jdk, apache2
 RUN apt-get update
